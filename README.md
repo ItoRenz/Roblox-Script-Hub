@@ -1,202 +1,173 @@
-# 🎮 ROBLOX Script Hub - Compact Layout
+# 🎮 Roblox Script Hub - Compact Layout
 
-A modern, responsive, and feature-rich script hub for ROBLOX with hamburger menu animation and smooth UI interactions.
+A lightweight, responsive script hub for Roblox with a modern hamburger menu interface and essential utility features.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![Platform](https://img.shields.io/badge/platform-ROBLOX-red.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+## 👤 Author
+**ItoRenz00**
 
 ## ✨ Features
 
-- 🍔 **Animated Hamburger Menu** - Smooth 3-line to X transformation
-- 📱 **Mobile & PC Responsive** - Optimized layouts for both platforms
-- 🎨 **Modern UI Design** - Discord-inspired color scheme with gradients
-- 🔄 **Smooth Animations** - TweenService-powered transitions
-- 🛡️ **Full Error Protection** - All connections wrapped in pcall
-- 🧹 **Auto Cleanup System** - Proper disposal of connections and GUI
-- 👁️ **Hide Player Titles** - Remove BillboardGuis and player names
-- 📱 **Hide All UI** - Toggle visibility of all screen GUIs
-- ⚡ **Lightweight** - Optimized and compact codebase
-- 🎯 **Easy to Use** - One-click toggle switches
+- **👁 Hide Title** - Hide player name displays and billboards
+- **👤 Hide Players** - Make other players invisible (transparency + GUI hiding)
+- **📱 Hide All UI** - Toggle visibility of all ScreenGui elements
+- **🍔 Hamburger Menu** - Smooth animated toggle button with X transformation
+- **📱 Responsive Design** - Optimized layouts for both mobile and PC
+- **🎨 Modern UI** - Discord-inspired color scheme with smooth animations
+- **🛡️ Error Protection** - Full pcall protection on all connections
+- **🧹 Auto Cleanup** - Automatic cleanup system on script removal
 
-## 📊 Specifications
+## 📦 Installation
 
-### Mobile 📱
-- **Toggle Button:** 25x25px
-- **Position:** 60px from top, 35px from right
-- **Menu Size:** 135x170px
-- **Item Height:** 30px
-- **Text Size:** 8-9px
+### Method 1: Roblox Studio
+1. Open Roblox Studio
+2. Insert a **LocalScript** into:
+   - `StarterGui` (recommended), or
+   - `StarterPlayer > StarterPlayerScripts`
+3. Copy and paste the script code
+4. Save and test in Play mode
 
-### PC 💻
-- **Toggle Button:** 30x30px
-- **Position:** 70px from top, 36px from right
-- **Menu Size:** 200x280px
-- **Item Height:** 42px
-- **Text Size:** 11-13px
+### Method 2: Executor (Client-side)
+1. Copy the entire script
+2. Paste into your executor
+3. Execute the script
 
-## 🚀 Installation
-
-### Method 1: Direct Copy (Recommended)
-
-1. Copy the script from the artifact
-2. Open ROBLOX Studio
-3. Create a new `LocalScript` in:
-   - `StarterGui` OR
-   - `StarterPlayer → StarterPlayerScripts`
-4. Paste the script
-5. Save and play!
-
-### Method 2: GitHub
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/roblox-script-hub.git
-
-# Copy the script file to your ROBLOX Studio project
-```
-
-## 📖 Usage
+## 🎯 Usage
 
 ### Opening the Menu
-Click the hamburger button (☰) in the top-right corner of the screen.
+- Click the **hamburger button** (☰) in the top-right corner
+- The button animates into an X when the menu is open
 
-### Available Scripts
+### Features Control
+Each feature has a toggle switch:
+- **Green/Blue** = Enabled ✅
+- **Gray** = Disabled ❌
 
-#### 👁️ Hide Player Titles
-- Hides all BillboardGuis above player heads
-- Removes player names and titles
-- Automatically applies to new players
-- Works with character respawns
+### Closing the Menu
+- Click the hamburger button again, or
+- Click the **red X button** in the menu header
 
-#### 📱 Hide All UI
-- Toggles visibility of all screen GUIs
-- Preserves original states
-- Excludes the script hub itself
-- Instant toggle on/off
+## 📐 UI Specifications
 
-### Toggle Switches
-Each script has a smooth toggle switch:
-- **Gray** = Disabled ● OFF
-- **Cyan** = Enabled ● ON
+### Mobile Layout
+- Toggle Button: 25x25px
+- Position: Top-right (35px from right, 5px from top)
+- Menu Panel: 135x140px
+- Items: Compact 30px height
+
+### PC Layout
+- Toggle Button: 30x30px
+- Position: Top-right (37px from right, 10px from top)
+- Menu Panel: 200x200px
+- Items: Standard 42px height
+
+## 🔧 Technical Details
+
+### Script Structure
+```
+Script Hub
+├── Toggle Button (Hamburger Menu)
+├── Menu Panel
+│   ├── Header (with close button)
+│   ├── ScrollingFrame
+│   └── Script Items
+└── Script Modules
+    ├── Hide Title
+    ├── Hide Players
+    └── Hide All UI
+```
+
+### Key Features
+- **Platform Detection**: Automatically detects mobile/PC
+- **TweenService**: Smooth animations for all UI elements
+- **Connection Management**: Safe connection handling with cleanup
+- **Error Handling**: pcall wrapping on all critical operations
+- **Memory Management**: Proper cleanup on script removal
 
 ## 🎨 Color Scheme
 
-```lua
-Primary: rgb(88, 101, 242)    -- Discord Blurple
-Secondary: rgb(114, 137, 218)  -- Light Blurple
-Background: rgb(25, 28, 33)    -- Dark Gray
-Item BG: rgb(35, 38, 43)       -- Medium Gray
-Accent: rgb(88, 201, 242)      -- Cyan
-Close Button: rgb(237, 66, 69) -- Red
-```
+- Primary: `RGB(88, 101, 242)` - Discord Blurple
+- Secondary: `RGB(114, 137, 218)` - Light Blurple
+- Background: `RGB(25, 28, 33)` - Dark Gray
+- Items: `RGB(35, 38, 43)` - Medium Gray
+- Accent (Active): `RGB(88, 201, 242)` - Cyan
+- Accent (Danger): `RGB(237, 66, 69)` - Red
 
-## 🛠️ Technical Details
+## 📝 Script Descriptions
 
-### Services Used
-- `Players` - Player management
-- `UserInputService` - Input detection and mobile check
-- `TweenService` - Smooth animations
-- `RunService` - Frame updates
+### Hide Title
+Hides all player name displays including:
+- BillboardGui elements
+- SurfaceGui on character heads
+- TextLabel/TextButton/TextBox in head
+- Humanoid display distance settings
 
-### Key Components
-- **ScreenGui** - Main container (DisplayOrder: 999999)
-- **Toggle Button** - Hamburger menu with gradient
-- **Menu Panel** - Collapsible frame with header
-- **ScrollingFrame** - Script list container
-- **UIListLayout** - Automatic item positioning
+### Hide Players
+Makes other players completely invisible:
+- Sets all BaseParts to full transparency
+- Hides Decals and Textures
+- Disables ParticleEmitters, Beams, and Trails
+- Hides all character GUIs and text elements
+- Maintains collision detection off
 
-### Animations
-- **Hamburger to X:** 0.3s Back easing
-- **Menu Open/Close:** 0.3s Back/Quad easing
-- **Toggle Switches:** 0.25s Quad easing
-- **Hover Effects:** 0.15s smooth transitions
-- **Breathing Border:** 2s Sine infinite loop
+### Hide All UI
+Toggles all ScreenGui elements:
+- Hides all GUI except the Script Hub
+- Remembers original enabled states
+- Restores all UI when disabled
 
-## 🧹 Cleanup System
+## ⚠️ Important Notes
 
-The script automatically cleans up when:
-- Player leaves the game
-- GUI is destroyed
-- Script is disabled
+1. **LocalScript Only**: This script must run as a LocalScript (client-side)
+2. **ResetOnSpawn**: Set to false - the GUI persists through respawns
+3. **Compatibility**: Works on all Roblox games (universal)
+4. **Performance**: Optimized for minimal performance impact
+5. **Safety**: All operations wrapped in pcall for error protection
 
-All connections are properly disconnected to prevent memory leaks.
+## 🐛 Troubleshooting
 
-## 🔒 Error Protection
+### GUI not appearing
+- Ensure script is in `StarterGui` or `StarterPlayerScripts`
+- Check if it's a LocalScript (not Script)
+- Verify no errors in output console
 
-Every connection and operation is wrapped in `pcall()` to ensure:
-- No script errors break the hub
-- Graceful failure handling
-- Console warnings for debugging
+### Features not working
+- Make sure you're testing in Play mode
+- Check that the game allows LocalScript execution
+- Some games may have anti-cheat that blocks certain features
 
-## 🎯 Performance
+### Mobile controls not working
+- The script auto-detects mobile devices
+- Try restarting the game if layout seems wrong
 
-- **Minimal resource usage** - Only active connections when needed
-- **Optimized rendering** - Z-index management
-- **Smart detection** - Mobile vs PC automatic detection
-- **Memory efficient** - Proper cleanup and disposal
+## 📄 License
 
-## 📱 Mobile Support
-
-- Larger touch targets (25px minimum)
-- Haptic feedback on toggle
-- Optimized text sizes
-- Touch-friendly spacing
-- Responsive positioning
+This script is free to use and modify for personal use.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Inspired by modern UI/UX design principles
-- Discord color scheme reference
-- ROBLOX developer community
+Feel free to fork and improve this script! If you make enhancements:
+1. Keep the author credit intact
+2. Document your changes
+3. Test thoroughly on both mobile and PC
 
 ## 📞 Support
 
-If you encounter any issues or have questions:
-- Open an issue on GitHub
-- Contact via Discord
-- Check the FAQ section
+For issues or questions:
+- Check the troubleshooting section
+- Review the code comments
+- Test in a clean Roblox game first
 
-## 🔄 Changelog
+## 🔄 Version History
 
-### Version 1.0.0 (2025-01-XX)
-- ✨ Initial release
-- 🍔 Hamburger menu animation
-- 📱 Mobile and PC responsive design
-- 👁️ Hide Player Titles script
-- 📱 Hide All UI script
-- 🧹 Auto cleanup system
-- 🛡️ Full error protection
-- 📏 Compact layout optimization
-
-## 🎮 Game Compatibility
-
-Tested and working on:
-- ✅ All ROBLOX games
-- ✅ Mobile devices (iOS/Android)
-- ✅ PC (Windows/Mac)
-- ✅ Console (Xbox)
-
-## ⚠️ Disclaimer
-
-This script is for educational purposes. Use responsibly and follow ROBLOX Terms of Service.
+### Version 1.0.0
+- Initial release
+- Three core features (Hide Title, Hide Players, Hide All UI)
+- Responsive mobile/PC layout
+- Hamburger menu with animations
+- Full error protection and cleanup system
 
 ---
 
-**Made with ❤️ for the ROBLOX community**
+**Made with ❤️ by ItoRenz00**
 
-⭐ Star this repository if you found it helpful!
+*Last Updated: 2025*
