@@ -1,233 +1,198 @@
-# ROBLOX Script Hub v2.1.2
+# 🛠️ ROBLOX Script Hub v2.2.0
 
-A feature-rich, mobile-friendly script hub for ROBLOX with visibility controls, UI management, and spectator functionality.
+A modern, feature-rich script hub for ROBLOX with a clean UI and powerful utilities. Designed for both PC and Mobile platforms.
 
-![Version](https://img.shields.io/badge/version-2.1.2-blue.svg)
+![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)
 ![Platform](https://img.shields.io/badge/platform-ROBLOX-red.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 ## ✨ Features
 
-### 👁️ Visibility Controls
-- **Hide Title** - Hide player nametags and overhead displays
-- **Hide Players** - Make other players invisible (including their titles and displays)
+### 👁️ Visibility
+- **Hide Title** - Hide all player nametags and displays
+- **Hide Players** - Make other players invisible (characters + titles)
 
-### 📱 Interface Management
-- **Hide All UI** - Hide game UI elements while preserving:
-  - Player List (Leaderboard)
-  - Chat system
-  - Emotes menu
-  - Healthbar and backpack are hidden
+### 📱 Interface
+- **Hide All UI** - Hide game UI elements while keeping leaderboard, chat, and emotes menu visible
 
-### 🎥 Camera Features
-- **Spectator Mode** - Advanced spectator system with:
-  - Smooth player-to-player navigation
-  - Arrow controls for switching targets
-  - Player info display (DisplayName & Username)
-  - Preserved leaderboard visibility
-  - Auto-cleanup when players leave
-  - Automatic UI hiding during spectation
+### 🎥 Camera
+- **Spectator Mode** - Spectate other players with navigation controls
+  - Keep leaderboard visible while spectating
+  - Navigate between players with arrow buttons
+  - Automatic player list updates
 
-## 🚀 Installation
+### 🔄 Reset
+- **Reset to Base** - Instant teleport to basecamp with checkpoint reset
+  - Automatic basecamp detection
+  - Physics reset
+  - Health restoration
+  - Server-side checkpoint reset support
 
-1. Copy the entire script from `script.lua`
-2. Paste it into your ROBLOX executor
-3. Execute the script
-4. Click the hamburger menu button (top-right corner) to open the hub
+## 📦 Installation
 
-## 📱 Platform Support
+### Client Script
+1. Open your ROBLOX game in Studio
+2. Navigate to `StarterPlayer` > `StarterPlayerScripts`
+3. Create a new `LocalScript`
+4. Copy and paste the complete script
+5. Save and test!
 
-- ✅ **PC/Desktop** - Full functionality with optimized UI sizing
-- ✅ **Mobile** - Touch-optimized interface with adjusted button sizes
-- ✅ **Tablet** - Adaptive layout for various screen sizes
+### Server Script (Optional - for checkpoint reset)
+Required only if you want the checkpoint reset functionality to work properly.
+
+Place in `ServerScriptService`:
+
+```lua
+--[[
+    Basecamp Reset System - Server Script
+    Compatible with: StatsCore Sequential CP System
+]]
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Create or get RemoteEvent
+local resetEvent = ReplicatedStorage:FindFirstChild("ResetCheckpointEvent")
+if not resetEvent then
+    resetEvent = Instance.new("RemoteEvent")
+    resetEvent.Name = "ResetCheckpointEvent"
+    resetEvent.Parent = ReplicatedStorage
+end
+
+-- Handle checkpoint reset
+resetEvent.OnServerEvent:Connect(function(player, action)
+    if action == "ResetCheckpoint" then
+        -- Reset checkpoint logic
+        local leaderstats = player:FindFirstChild("leaderstats")
+        if leaderstats then
+            local stage = leaderstats:FindFirstChild("Stage")
+            if stage then
+                stage.Value = 0 -- Reset to stage 0
+                print("✓ Checkpoint reset for " .. player.Name)
+            end
+        end
+    end
+end)
+
+print("✓ Basecamp Reset System Loaded (SERVER)")
+```
 
 ## 🎮 Usage
 
 ### Opening the Menu
-- Click/tap the **hamburger button** (☰) in the top-right corner
-- The menu will smoothly expand with all available categories
+- Click the **hamburger menu button** (top-right corner)
+- Menu opens with smooth animation
 
-### Navigating Categories
-- Click on any category header to expand/collapse it
-- Only one category can be expanded at a time for cleaner UI
-- Categories include:
-  - 👁️ Visibility
-  - 📱 Interface  
-  - 🎥 Camera
+### Using Features
+1. Click on any category to expand it
+2. Toggle switches to enable/disable features
+3. Features activate instantly
+4. Click **Reset to Base** for instant teleport (menu closes automatically)
 
-### Toggling Features
-- Each feature has a toggle switch
-- **Enabled** = Cyan indicator with "● Enabled" status
-- **Disabled** = Gray indicator with "● Disabled" status
-- Changes apply instantly
+### Closing the Menu
+- Click the **X button** or **hamburger menu** again
+- Menu closes instantly (no animation for fast response)
 
-### Spectator Mode Controls
-When spectator mode is active:
-- **◀ Left Arrow** - Previous player
-- **▶ Right Arrow** - Next player
-- **Info Display** - Shows current spectated player's name
-- **Auto-hide** - UI and player titles are automatically hidden
-- **Exit** - Toggle spectator mode off to return to normal view
+## 🎨 UI Features
 
-## 🔧 Technical Details
+- **Responsive Design** - Automatically adapts to PC and Mobile
+- **Modern Aesthetics** - Discord-inspired color scheme
+- **Smooth Animations** - Opening animations with instant closing
+- **Category System** - Organized features in expandable categories
+- **Visual Feedback** - Hover effects and status indicators
+- **Breathing Effect** - Subtle glow animation on toggle button
 
-### Services Used
-```lua
-- Players
-- UserInputService
-- TweenService
-- RunService
-- StarterGui
-```
+## ⚙️ Configuration
 
-### UI Framework
-- **ScreenGui** with high DisplayOrder (999999)
-- **ResetOnSpawn** disabled for persistence
-- **Adaptive sizing** based on platform detection
-- **Smooth animations** using TweenService
+### Basecamp Detection
+The script automatically searches for these object names:
+- `Basecamp`
+- `SpawnLocation`
+- `Base`
+- `Spawn`
 
-### Color Scheme
-```lua
-Primary: RGB(88, 101, 242)    - Discord Blurple
-Secondary: RGB(114, 137, 218)  - Light Blurple
-Background: RGB(25, 28, 33)    - Dark Gray
-Accent: RGB(88, 201, 242)      - Cyan
-```
+If none found, defaults to position: `Vector3.new(0, 50, 0)`
 
-## 📝 Changelog
-
-### v2.1.2 (Current)
-- ✅ Enhanced Hide All UI to preserve PlayerList, Chat, and Emotes
-- ✅ Only hides Health and Backpack CoreGui elements
-- ✅ Improved spectator mode with leaderboard visibility
-- ✅ Better player GUI detection and hiding
-- ✅ Added leaderboard exclusion checks
-
-### v2.1.1
-- Enhanced Hide Players to include titles
-- Improved mobile responsiveness
-- Bug fixes for UI scaling
-
-### v2.1.0
-- Added Spectator Mode
-- Category-based organization
-- Improved animations
-
-### v2.0.0
-- Complete UI overhaul
-- Mobile support
-- Toggle button redesign
-
-## ⚠️ Known Limitations
-
-- Spectator mode cannot spectate players without a character
-- Some custom UI elements may not be detected by Hide All UI
-- Mobile performance may vary on low-end devices
-
-## 🛠️ Customization
-
-### Changing Colors
-Edit the `COLORS` table:
+### Customization
+You can modify colors in the `COLORS` table:
 ```lua
 local COLORS = {
     primary = Color3.fromRGB(88, 101, 242),
     secondary = Color3.fromRGB(114, 137, 218),
-    -- Add your custom colors here
+    background = Color3.fromRGB(25, 28, 33),
+    -- ... more colors
 }
 ```
 
-### Adjusting Sizes
-Modify the `SIZES` table:
-```lua
-local SIZES = {
-    toggleBtn = isMobile and 25 or 30,
-    menuWidth = isMobile and 135 or 200,
-    -- Customize dimensions here
-}
-```
+## 📱 Platform Support
+
+### PC
+- Full keyboard and mouse support
+- Hover effects
+- Optimized button sizes
+
+### Mobile
+- Touch-optimized controls
+- Adjusted UI scaling
+- Smaller button sizes for better mobile UX
+
+## 🔧 Technical Details
+
+- **No LocalStorage/SessionStorage** - Uses in-memory state management
+- **Persistent GUI** - `ResetOnSpawn = false`
+- **High DisplayOrder** - GUI appears above other elements
+- **Safe Connections** - Protected event connections with error handling
+- **Cleanup System** - Automatic cleanup on script removal
+
+## 📝 Changelog
+
+### v2.2.0 (Current)
+- ✨ Added Reset to Base feature with server sync
+- ⚡ Instant menu closing (no animation)
+- 🔄 Renamed Teleport category to Reset
+- 🐛 Bug fixes and improvements
+
+### v2.1.2
+- ✨ Hide All UI now preserves PlayerList, Chat, and Emotes Menu
+- 🎥 Spectator Mode improvements
+
+### v2.0.0
+- 🎨 Complete UI redesign
+- 📱 Mobile support
+- 🗂️ Category system implementation
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to:
-- Report bugs
-- Suggest new features
-- Submit pull requests
-- Improve documentation
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see below:
-
-```
-MIT License
-
-Copyright (c) 2024 ItoRenz00
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 👤 Author
 
 **ItoRenz00**
-- GitHub: [@ItoRenz](https://github.com/ItoRenz)
 
-## 🌟 Support
+## 🙏 Credits
 
-If you find this script helpful, please:
-- ⭐ Star this repository
-- 🐛 Report any bugs you find
-- 💡 Share your feature ideas
+- Inspired by modern Discord UI design
+- Built for the ROBLOX community
 
----
+## ⚠️ Disclaimer
 
-## 📋 Commit Message Template
+This script is provided "as is" without warranty of any kind. Use at your own risk. Always test in a private server before using in production games.
 
-```
-feat: v2.1.2 - Enhanced UI hiding with leaderboard preservation
+## 🐛 Known Issues
 
-Major Changes:
-- Improved Hide All UI to exclude PlayerList, Chat, and Emotes
-- Now only hides Health and Backpack CoreGui elements
-- Enhanced spectator mode with visible leaderboard
-- Better player GUI detection for hiding overhead displays
+- None reported yet
 
-Technical Improvements:
-- Added isLeaderboardGui() function for smart UI detection
-- Improved hidePlayerGui() with better scope handling
-- Enhanced cleanup system for spectator mode
-- Fixed UI restoration on spectator exit
+## 📞 Support
 
-Bug Fixes:
-- Fixed issue where chat/emotes were hidden unnecessarily
-- Resolved leaderboard hiding during spectator mode
-- Improved memory cleanup on script destruction
-
-Platform Support:
-- Maintained full mobile/desktop compatibility
-- Optimized UI sizing for both platforms
-- Improved touch responsiveness on mobile
-
-This update focuses on preserving essential UI elements (leaderboard, 
-chat, emotes) while hiding non-essential elements, providing a cleaner
-spectating experience without losing important game information.
-```
+If you encounter any issues or have suggestions:
+1. Open an issue on GitHub
+2. Provide detailed information about the problem
+3. Include your ROBLOX Studio version
 
 ---
 
-**Made with ❤️ for the ROBLOX community**
+**⭐ If you find this useful, please give it a star!**
