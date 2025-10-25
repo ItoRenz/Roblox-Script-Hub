@@ -1,7 +1,8 @@
 --[[
-    ROBLOX SCRIPT HUB v2.1.2
+    ROBLOX SCRIPT HUB v2.2.0
     Author: ItoRenz00
-    Features: Hide Title, Hide Players, Hide UI, Spectator Mode
+    Features: Hide Title, Hide Players, Hide UI, Spectator Mode, Reset to Base
+    Place: StarterPlayer > StarterPlayerScripts > LocalScript
 ]]
 
 -- Services
@@ -10,6 +11,7 @@ local UIS = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local StarterGui = game:GetService("StarterGui")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 local isMobile = UIS.TouchEnabled and not UIS.KeyboardEnabled
@@ -21,6 +23,14 @@ screenGui.ResetOnSpawn = false
 screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 screenGui.DisplayOrder = 999999
 screenGui.Parent = PlayerGui
+
+-- Setup Remote Event for Basecamp Reset
+local resetEvent = ReplicatedStorage:FindFirstChild("ResetCheckpointEvent")
+if not resetEvent then
+    resetEvent = Instance.new("RemoteEvent")
+    resetEvent.Name = "ResetCheckpointEvent"
+    resetEvent.Parent = ReplicatedStorage
+end
 
 -- Constants
 local COLORS = {
@@ -205,15 +215,10 @@ local function toggleMenu()
             Size = UDim2.new(0, isMobile and 28 or 33, 0, isMobile and 28 or 33)
         }):Play()
     else
-        TweenService:Create(menuFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
-            Size = UDim2.new(0, SIZES.menuWidth, 0, 0)
-        }):Play()
-        TweenService:Create(toggleButton, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
-            Size = UDim2.new(0, SIZES.toggleBtn, 0, SIZES.toggleBtn)
-        }):Play()
-        task.delay(0.3, function()
-            menuFrame.Visible = false
-        end)
+        -- Instant close without animation
+        menuFrame.Visible = false
+        menuFrame.Size = UDim2.new(0, SIZES.menuWidth, 0, 0)
+        toggleButton.Size = UDim2.new(0, SIZES.toggleBtn, 0, SIZES.toggleBtn)
     end
 end
 
@@ -866,11 +871,95 @@ local spectatorScript = {
     end
 }
 
+local basecampResetScript = {
+    name = "Reset to Base",
+    icon = "⌂",
+    enabled = false,
+    basecampNames = {"Basecamp", "SpawnLocation", "Base", "Spawn"},
+    defaultSpawn = Vector3.new(0, 50, 0),
+    
+    findBasecamp = function(self)
+        for _, name in ipairs(self.basecampNames) do
+            local found = workspace:FindFirstChild(name)
+            if found then return found end
+        end
+        return nil
+    end,
+    
+    resetToBasecamp = function(self)
+        local character = LocalPlayer.Character
+        if not character or not character:FindFirstChild("HumanoidRootPart") then
+            warn("⚠️ Character not found or HumanoidRootPart missing")
+            return false
+        end
+        
+        -- Fire server event to reset checkpoint
+        pcall(function()
+            resetEvent:FireServer("ResetCheckpoint")
+        end)
+        
+        -- Find and teleport to basecamp
+        local basecamp = self:findBasecamp()
+        local hrp = character.HumanoidRootPart
+        
+        if basecamp then
+            local spawnPart = basecamp:IsA("BasePart") and basecamp or basecamp:FindFirstChildWhichIsA("BasePart", true)
+            
+            if spawnPart and spawnPart:IsA("BasePart") then
+                character:MoveTo(spawnPart.Position + Vector3.new(0, 3, 0))
+                print("✓ Reset to basecamp successful!")
+            else
+                character:MoveTo(basecamp:GetPivot().Position + Vector3.new(0, 3, 0))
+                print("✓ Reset to basecamp successful (pivot)!")
+            end
+        else
+            character:MoveTo(self.defaultSpawn)
+            warn("⚠️ Basecamp not found, spawning at default location")
+        end
+        
+        -- Reset physics
+        if hrp then
+            hrp.AssemblyLinearVelocity = Vector3.zero
+            hrp.AssemblyAngularVelocity = Vector3.zero
+            hrp.CFrame = CFrame.new(hrp.Position) * CFrame.Angles(0, hrp.CFrame:ToEulerAnglesYXZ(), 0)
+        end
+        
+        -- Restore health
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.Health = humanoid.MaxHealth
+            print("✓ Health restored")
+        end
+        
+        return true
+    end,
+    
+    toggle = function(self)
+        -- This is a one-time action script, not a toggle
+        local success = self:resetToBasecamp()
+        
+        -- Close menu immediately after reset (no animation)
+        if success and menuOpen then
+            menuOpen = false
+            animateHamburger(false)
+            menuFrame.Visible = false
+            menuFrame.Size = UDim2.new(0, SIZES.menuWidth, 0, 0)
+            toggleButton.Size = UDim2.new(0, SIZES.toggleBtn, 0, SIZES.toggleBtn)
+        end
+        
+        return false -- Always return to disabled state
+    end,
+    
+    setup = function(self) end,
+    cleanup = function(self) end
+}
+
 -- Categories
 local categories = {
     {name = "👁️ Visibility", icon = "👁️", expanded = false, scripts = {hideScript, hidePlayersScript}},
     {name = "📱 Interface", icon = "📱", expanded = false, scripts = {hideUIScript}},
-    {name = "🎥 Camera", icon = "🎥", expanded = false, scripts = {spectatorScript}}
+    {name = "🎥 Camera", icon = "🎥", expanded = false, scripts = {spectatorScript}},
+    {name = "🔄 Reset", icon = "🔄", expanded = false, scripts = {basecampResetScript}}
 }
 
 -- Initialize Scripts
@@ -1199,7 +1288,8 @@ end))
 
 -- Initialization
 print("═══════════════════════════════════════════════")
-print("✅ Script Hub v2.1.2 Loaded!")
+print("✅ Script Hub v2.2.0 Loaded!")
+print("📍 Location: StarterPlayer > StarterPlayerScripts")
 print("📱 Platform: " .. (isMobile and "Mobile 📱" or "PC 💻"))
 print("🗂️ Categories: " .. #categories)
 print("🎮 Features:")
@@ -1207,5 +1297,7 @@ print("   • Hide Title - Hide player nametags")
 print("   • Hide Players - Hide players + titles")
 print("   • Hide All UI - Hide UI (keep leaderboard/chat/emotes)")
 print("   • Spectator - Spectate with leaderboard visible")
-print("🆕 v2.1.2: UI now excludes PlayerList, Chat & Emotes")
+print("   • Reset to Base - Teleport to basecamp + reset checkpoint")
+print("🆕 v2.2.0: Added Basecamp Reset with Server sync")
+print("⚠️  Requires Server Script for checkpoint reset!")
 print("═══════════════════════════════════════════════")
