@@ -1,173 +1,233 @@
-# 🎮 Roblox Script Hub - Compact Layout
+# ROBLOX Script Hub v2.1.2
 
-A lightweight, responsive script hub for Roblox with a modern hamburger menu interface and essential utility features.
+A feature-rich, mobile-friendly script hub for ROBLOX with visibility controls, UI management, and spectator functionality.
 
-## 👤 Author
-**ItoRenz00**
+![Version](https://img.shields.io/badge/version-2.1.2-blue.svg)
+![Platform](https://img.shields.io/badge/platform-ROBLOX-red.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 ## ✨ Features
 
-- **👁 Hide Title** - Hide player name displays and billboards
-- **👤 Hide Players** - Make other players invisible (transparency + GUI hiding)
-- **📱 Hide All UI** - Toggle visibility of all ScreenGui elements
-- **🍔 Hamburger Menu** - Smooth animated toggle button with X transformation
-- **📱 Responsive Design** - Optimized layouts for both mobile and PC
-- **🎨 Modern UI** - Discord-inspired color scheme with smooth animations
-- **🛡️ Error Protection** - Full pcall protection on all connections
-- **🧹 Auto Cleanup** - Automatic cleanup system on script removal
+### 👁️ Visibility Controls
+- **Hide Title** - Hide player nametags and overhead displays
+- **Hide Players** - Make other players invisible (including their titles and displays)
 
-## 📦 Installation
+### 📱 Interface Management
+- **Hide All UI** - Hide game UI elements while preserving:
+  - Player List (Leaderboard)
+  - Chat system
+  - Emotes menu
+  - Healthbar and backpack are hidden
 
-### Method 1: Roblox Studio
-1. Open Roblox Studio
-2. Insert a **LocalScript** into:
-   - `StarterGui` (recommended), or
-   - `StarterPlayer > StarterPlayerScripts`
-3. Copy and paste the script code
-4. Save and test in Play mode
+### 🎥 Camera Features
+- **Spectator Mode** - Advanced spectator system with:
+  - Smooth player-to-player navigation
+  - Arrow controls for switching targets
+  - Player info display (DisplayName & Username)
+  - Preserved leaderboard visibility
+  - Auto-cleanup when players leave
+  - Automatic UI hiding during spectation
 
-### Method 2: Executor (Client-side)
-1. Copy the entire script
-2. Paste into your executor
+## 🚀 Installation
+
+1. Copy the entire script from `script.lua`
+2. Paste it into your ROBLOX executor
 3. Execute the script
+4. Click the hamburger menu button (top-right corner) to open the hub
 
-## 🎯 Usage
+## 📱 Platform Support
+
+- ✅ **PC/Desktop** - Full functionality with optimized UI sizing
+- ✅ **Mobile** - Touch-optimized interface with adjusted button sizes
+- ✅ **Tablet** - Adaptive layout for various screen sizes
+
+## 🎮 Usage
 
 ### Opening the Menu
-- Click the **hamburger button** (☰) in the top-right corner
-- The button animates into an X when the menu is open
+- Click/tap the **hamburger button** (☰) in the top-right corner
+- The menu will smoothly expand with all available categories
 
-### Features Control
-Each feature has a toggle switch:
-- **Green/Blue** = Enabled ✅
-- **Gray** = Disabled ❌
+### Navigating Categories
+- Click on any category header to expand/collapse it
+- Only one category can be expanded at a time for cleaner UI
+- Categories include:
+  - 👁️ Visibility
+  - 📱 Interface  
+  - 🎥 Camera
 
-### Closing the Menu
-- Click the hamburger button again, or
-- Click the **red X button** in the menu header
+### Toggling Features
+- Each feature has a toggle switch
+- **Enabled** = Cyan indicator with "● Enabled" status
+- **Disabled** = Gray indicator with "● Disabled" status
+- Changes apply instantly
 
-## 📐 UI Specifications
-
-### Mobile Layout
-- Toggle Button: 25x25px
-- Position: Top-right (35px from right, 5px from top)
-- Menu Panel: 135x140px
-- Items: Compact 30px height
-
-### PC Layout
-- Toggle Button: 30x30px
-- Position: Top-right (37px from right, 10px from top)
-- Menu Panel: 200x200px
-- Items: Standard 42px height
+### Spectator Mode Controls
+When spectator mode is active:
+- **◀ Left Arrow** - Previous player
+- **▶ Right Arrow** - Next player
+- **Info Display** - Shows current spectated player's name
+- **Auto-hide** - UI and player titles are automatically hidden
+- **Exit** - Toggle spectator mode off to return to normal view
 
 ## 🔧 Technical Details
 
-### Script Structure
-```
-Script Hub
-├── Toggle Button (Hamburger Menu)
-├── Menu Panel
-│   ├── Header (with close button)
-│   ├── ScrollingFrame
-│   └── Script Items
-└── Script Modules
-    ├── Hide Title
-    ├── Hide Players
-    └── Hide All UI
+### Services Used
+```lua
+- Players
+- UserInputService
+- TweenService
+- RunService
+- StarterGui
 ```
 
-### Key Features
-- **Platform Detection**: Automatically detects mobile/PC
-- **TweenService**: Smooth animations for all UI elements
-- **Connection Management**: Safe connection handling with cleanup
-- **Error Handling**: pcall wrapping on all critical operations
-- **Memory Management**: Proper cleanup on script removal
+### UI Framework
+- **ScreenGui** with high DisplayOrder (999999)
+- **ResetOnSpawn** disabled for persistence
+- **Adaptive sizing** based on platform detection
+- **Smooth animations** using TweenService
 
-## 🎨 Color Scheme
+### Color Scheme
+```lua
+Primary: RGB(88, 101, 242)    - Discord Blurple
+Secondary: RGB(114, 137, 218)  - Light Blurple
+Background: RGB(25, 28, 33)    - Dark Gray
+Accent: RGB(88, 201, 242)      - Cyan
+```
 
-- Primary: `RGB(88, 101, 242)` - Discord Blurple
-- Secondary: `RGB(114, 137, 218)` - Light Blurple
-- Background: `RGB(25, 28, 33)` - Dark Gray
-- Items: `RGB(35, 38, 43)` - Medium Gray
-- Accent (Active): `RGB(88, 201, 242)` - Cyan
-- Accent (Danger): `RGB(237, 66, 69)` - Red
+## 📝 Changelog
 
-## 📝 Script Descriptions
+### v2.1.2 (Current)
+- ✅ Enhanced Hide All UI to preserve PlayerList, Chat, and Emotes
+- ✅ Only hides Health and Backpack CoreGui elements
+- ✅ Improved spectator mode with leaderboard visibility
+- ✅ Better player GUI detection and hiding
+- ✅ Added leaderboard exclusion checks
 
-### Hide Title
-Hides all player name displays including:
-- BillboardGui elements
-- SurfaceGui on character heads
-- TextLabel/TextButton/TextBox in head
-- Humanoid display distance settings
+### v2.1.1
+- Enhanced Hide Players to include titles
+- Improved mobile responsiveness
+- Bug fixes for UI scaling
 
-### Hide Players
-Makes other players completely invisible:
-- Sets all BaseParts to full transparency
-- Hides Decals and Textures
-- Disables ParticleEmitters, Beams, and Trails
-- Hides all character GUIs and text elements
-- Maintains collision detection off
+### v2.1.0
+- Added Spectator Mode
+- Category-based organization
+- Improved animations
 
-### Hide All UI
-Toggles all ScreenGui elements:
-- Hides all GUI except the Script Hub
-- Remembers original enabled states
-- Restores all UI when disabled
+### v2.0.0
+- Complete UI overhaul
+- Mobile support
+- Toggle button redesign
 
-## ⚠️ Important Notes
+## ⚠️ Known Limitations
 
-1. **LocalScript Only**: This script must run as a LocalScript (client-side)
-2. **ResetOnSpawn**: Set to false - the GUI persists through respawns
-3. **Compatibility**: Works on all Roblox games (universal)
-4. **Performance**: Optimized for minimal performance impact
-5. **Safety**: All operations wrapped in pcall for error protection
+- Spectator mode cannot spectate players without a character
+- Some custom UI elements may not be detected by Hide All UI
+- Mobile performance may vary on low-end devices
 
-## 🐛 Troubleshooting
+## 🛠️ Customization
 
-### GUI not appearing
-- Ensure script is in `StarterGui` or `StarterPlayerScripts`
-- Check if it's a LocalScript (not Script)
-- Verify no errors in output console
+### Changing Colors
+Edit the `COLORS` table:
+```lua
+local COLORS = {
+    primary = Color3.fromRGB(88, 101, 242),
+    secondary = Color3.fromRGB(114, 137, 218),
+    -- Add your custom colors here
+}
+```
 
-### Features not working
-- Make sure you're testing in Play mode
-- Check that the game allows LocalScript execution
-- Some games may have anti-cheat that blocks certain features
-
-### Mobile controls not working
-- The script auto-detects mobile devices
-- Try restarting the game if layout seems wrong
-
-## 📄 License
-
-This script is free to use and modify for personal use.
+### Adjusting Sizes
+Modify the `SIZES` table:
+```lua
+local SIZES = {
+    toggleBtn = isMobile and 25 or 30,
+    menuWidth = isMobile and 135 or 200,
+    -- Customize dimensions here
+}
+```
 
 ## 🤝 Contributing
 
-Feel free to fork and improve this script! If you make enhancements:
-1. Keep the author credit intact
-2. Document your changes
-3. Test thoroughly on both mobile and PC
+Contributions are welcome! Feel free to:
+- Report bugs
+- Suggest new features
+- Submit pull requests
+- Improve documentation
 
-## 📞 Support
+## 📄 License
 
-For issues or questions:
-- Check the troubleshooting section
-- Review the code comments
-- Test in a clean Roblox game first
+This project is licensed under the MIT License - see below:
 
-## 🔄 Version History
+```
+MIT License
 
-### Version 1.0.0
-- Initial release
-- Three core features (Hide Title, Hide Players, Hide All UI)
-- Responsive mobile/PC layout
-- Hamburger menu with animations
-- Full error protection and cleanup system
+Copyright (c) 2024 ItoRenz00
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## 👤 Author
+
+**ItoRenz00**
+- GitHub: [@ItoRenz](https://github.com/ItoRenz)
+
+## 🌟 Support
+
+If you find this script helpful, please:
+- ⭐ Star this repository
+- 🐛 Report any bugs you find
+- 💡 Share your feature ideas
 
 ---
 
-**Made with ❤️ by ItoRenz00**
+## 📋 Commit Message Template
 
-*Last Updated: 2025*
+```
+feat: v2.1.2 - Enhanced UI hiding with leaderboard preservation
+
+Major Changes:
+- Improved Hide All UI to exclude PlayerList, Chat, and Emotes
+- Now only hides Health and Backpack CoreGui elements
+- Enhanced spectator mode with visible leaderboard
+- Better player GUI detection for hiding overhead displays
+
+Technical Improvements:
+- Added isLeaderboardGui() function for smart UI detection
+- Improved hidePlayerGui() with better scope handling
+- Enhanced cleanup system for spectator mode
+- Fixed UI restoration on spectator exit
+
+Bug Fixes:
+- Fixed issue where chat/emotes were hidden unnecessarily
+- Resolved leaderboard hiding during spectator mode
+- Improved memory cleanup on script destruction
+
+Platform Support:
+- Maintained full mobile/desktop compatibility
+- Optimized UI sizing for both platforms
+- Improved touch responsiveness on mobile
+
+This update focuses on preserving essential UI elements (leaderboard, 
+chat, emotes) while hiding non-essential elements, providing a cleaner
+spectating experience without losing important game information.
+```
+
+---
+
+**Made with ❤️ for the ROBLOX community**
