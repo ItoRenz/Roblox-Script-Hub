@@ -76,11 +76,11 @@ local function createButton(props)
     return btn
 end
 
--- Toggle Button
+-- Toggle Button (UPDATED POSITION)
 local toggleButton = createButton({
     Name = "HubToggle",
     Size = UDim2.new(0, SIZES.toggleBtn, 0, SIZES.toggleBtn),
-    Position = isMobile and UDim2.new(1, -35, 0, 5) or UDim2.new(1, -37, 0, 10),
+    Position = isMobile and UDim2.new(1, -37, 0, -45) or UDim2.new(1, -35, 0, -45),
     BackgroundColor3 = COLORS.primary,
     BorderSizePixel = 0,
     Text = "",
@@ -114,11 +114,11 @@ local topLine = createLine("TopLine", UDim2.new(0, 0, 0, 0))
 local middleLine = createLine("MiddleLine", UDim2.new(0, 0, 0.5, -(isMobile and 0.75 or 1)))
 local bottomLine = createLine("BottomLine", UDim2.new(0, 0, 1, -(isMobile and 1.5 or 2)))
 
--- Menu Panel
+-- Menu Panel (UPDATED POSITION)
 local menuFrame = Instance.new("Frame")
 menuFrame.Name = "MenuPanel"
 menuFrame.Size = UDim2.new(0, SIZES.menuWidth, 0, 0)
-menuFrame.Position = UDim2.new(1, -(isMobile and 140 or 225), 0, isMobile and 35 or 45)
+menuFrame.Position = UDim2.new(1, -(isMobile and 143 or 205), 0, isMobile and -15 or -10)
 menuFrame.BackgroundColor3 = COLORS.background
 menuFrame.BorderSizePixel = 0
 menuFrame.ClipsDescendants = true
